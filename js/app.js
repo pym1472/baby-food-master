@@ -545,7 +545,7 @@ function viewSet() {
     <div class="small" id="photostat">사진 정보를 불러오는 중…</div>
     <div class="row wrap"><button class="btn" data-act="export">내보내기(사진 제외)</button><button class="btn" data-act="exportPhotos">사진 포함 내보내기</button><button class="btn" data-act="import">가져오기</button><button class="btn dan" data-act="reset">전체 초기화</button></div>
     <input type="file" id="impfile" accept=".json,application/json" hidden data-chg="impfile"></div>
-  <div class="disc">이 도구는 의학적 조언이 아닙니다. 담당 소아과 지침을 우선하세요. · 이유식 마스터 MVP v0.1</div>`;
+  <div class="disc">이 도구는 의학적 조언이 아닙니다. 담당 소아과 지침을 우선하세요. · 이유식 마스터 · 빌드 20261009b</div>`;
 }
 
 /* ============ 렌더 ============ */

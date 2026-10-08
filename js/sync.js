@@ -194,9 +194,11 @@ function syncBoot() {
 
 /* ---------- 설정 값 파싱 · 초대 링크 ---------- */
 function parseFbConfig(text) {
-  const m = String(text).match(/\{[\s\S]*\}/); if (!m) throw new Error('설정값을 찾지 못했어요');
-  let o; const raw = m[0];
-  try { o = JSON.parse(raw); } catch (e) { try { o = JSON.parse(raw.replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":').replace(/'/g, '"').replace(/,\s*}/g, '}')); } catch (e2) { throw new Error('설정값 형식을 읽지 못했어요'); } }
+  // 콘솔이 주는 코드에는 `import { initializeApp } ...` 같은 다른 중괄호도 있어서, apiKey 를 품은 가장 가까운 { } 만 잘라 읽는다
+  const t = String(text), ai = t.indexOf('apiKey'); if (ai < 0) throw new Error('설정값을 찾지 못했어요 (apiKey 가 보이지 않아요)');
+  const s0 = t.lastIndexOf('{', ai), e0 = t.indexOf('}', ai); if (s0 < 0 || e0 < 0) throw new Error('설정값 형식을 읽지 못했어요');
+  let o; const raw = t.slice(s0, e0 + 1);
+  try { o = JSON.parse(raw); } catch (e) { try { o = JSON.parse(raw.replace(/\/\/[^\n]*/g, '').replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":').replace(/'/g, '"').replace(/,(\s*})/g, '$1')); } catch (e2) { throw new Error('설정값 형식을 읽지 못했어요'); } }
   if (!o.apiKey || !o.projectId || !o.appId) throw new Error('apiKey·projectId·appId 가 모두 있어야 해요');
   return { apiKey: o.apiKey, authDomain: o.authDomain, projectId: o.projectId, storageBucket: o.storageBucket, messagingSenderId: o.messagingSenderId, appId: o.appId };
 }
